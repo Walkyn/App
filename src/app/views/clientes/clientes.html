@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Manager</title>
+    <link rel="icon" href="../../../assets/img/ico-logo.png" type="image/png">
+    <link href="../../../output.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/css/styles.css">
+    <link rel="stylesheet" href="../../../assets/css/material-icons.css">
+    <script src="../../../assets/js/alpine.js" defer></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap">
+</head>
+<style>
+    /* Personalizado para mayor control si es necesario */
+    #header {
+        z-index: 50; /* Un valor alto para asegurar que el header esté por encima del main */
+    }
+    #dynamicContent {
+        z-index: 10; /* Un valor bajo para que el main esté por debajo del header */
+    }
+</style>
+<body>
+    <div class="flex h-screen overflow-y-hidden bg-white" x-data="setup()"
+        x-init="$refs.loading.classList.add('hidden')">
+
+        <!-- Loading screen -->
+        <div  x-ref="loading"
+            class="fixed inset-0 z-50 flex items-center justify-center text-white bg-black bg-opacity-50"
+            style="backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px)">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+
+        <!-- Sidebar backdrop -->
+        <div id="header"  x-show.in.out.opacity="isSidebarOpen" class="fixed inset-0 z-10 bg-black bg-opacity-20 lg:hidden"
+            style="backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px)"></div>
+
+        <aside id="header"  x-transition:enter="transition transform duration-300"
+            x-transition:enter-start="-translate-x-full opacity-30  ease-in"
+            x-transition:enter-end="translate-x-0 opacity-100 ease-out"
+            x-transition:leave="transition transform duration-900"
+            x-transition:leave-start="translate-x-0 opacity-100 ease-out"
+            x-transition:leave-end="-translate-x-full opacity-0 ease-in"
+            class="bg-gray-100 fixed inset-y-0 z-10 flex flex-col flex-shrink-0 w-64 max-h-screen overflow-hidden transition-all transform border-r shadow-lg lg:z-auto lg:static lg:shadow-none "
+            :class="{'-translate-x-full lg:translate-x-0 lg:w-20': !isSidebarOpen}">
+
+            <!-- sidebar header -->
+            <div class="flex items-center justify-between flex-shrink-0 p-2"
+                :class="{'lg:justify-center': !isSidebarOpen}">
+                <span
+                    class="flex items-center p-2 text-xl font-semibold leading-8 tracking-wider uppercase whitespace-nowrap"
+                    style="color: #fff;">
+                    <img src="../../../assets/img/ico-logo.png" alt="Logo" class="w-10">
+                    <span :class="{'lg:hidden': !isSidebarOpen}" class="ml-2 text-slate-800">B-MANAGER</span>
+                </span>
+                <button @click="toggleSidbarMenu()" class="p-2 rounded-md lg:hidden">
+                    <span :class="{'transform transition-transform -rotate-180': isSidebarOpen}"
+                        class="material-icons text-gray-600"
+                        :class="{'transform transition-transform rotate-180': isSidebarOpen}">
+                        menu_open
+                    </span>
+                </button>
+            </div>
+
+            <nav class="flex-1 overflow-hidden hover:overflow-y-auto custom-scrollbar">
+                <ul class="pr-3 pl-3 overflow-hidden flex flex-col space-y-2">
+
+                    <div class="flex-grow overflow-y-auto custom-scrollbar pb-2">
+                        <h2 class="text-gray-600 text-sm font-jakarta pb-1">Menu</h2>
+
+                        <!-- Dashboard -->
+                        <div x-data @click="window.location.href = '../../components/panel.html'"
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">dashboard</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Dashboard</span>
+                        </div>
+
+
+                        <!-- Ventas -->
+                        <div x-data @click="window.location.href = '../ventas/venta.html'"
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">shopping_cart</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Ventas</span>
+                        </div>
+
+                        <!-- Clientes -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">people</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Clientes</span>
+                        </div>
+
+                        <!-- Productos -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">store</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Productos</span>
+                        </div>
+
+                        <!-- Inventario -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">inventory</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Inventario</span>
+                        </div>
+
+                        <!-- Informe -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">bar_chart</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Informe</span>
+                        </div>
+
+                        <!-- Cierre -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">receipt</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Cierre</span>
+                        </div>
+
+                        <!-- Reportes -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">assessment</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Reportes</span>
+                        </div>
+
+                        <h2 class="text-gray-500 mt-4 text-sm font-jakarta pb-2">Configuración</h2>
+
+                        <!-- Notificaciones -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-200 group cursor-pointer select-none relative">
+                            <div :class="{'justify-center': !isSidebarOpen, 'justify-start': isSidebarOpen}"
+                                class="flex items-center w-full">
+                                <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-700"
+                                    :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">notifications</i>
+                                <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                    class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Notificaciones</span>
+                                <!-- Punto rojo para notificación -->
+                                <div
+                                    class="absolute top-2.5 right-4 transform translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-red-500 rounded-full animate-pulse z-10">
+                                </div>
+                            </div>
+                            <div :class="{'hidden': !isSidebarOpen, 'flex': isSidebarOpen}"
+                                class="bg-purple-500 text-white rounded-lg h-6 w-8 items-center justify-center text-sm font-semibold transition-opacity duration-300">
+                                12
+                            </div>
+                        </div>
+
+
+
+                        <!-- Ajustes -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">settings</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Más</span>
+                        </div>
+                    </div>
+                </ul>
+            </nav>
+
+
+
+            <div class="flex border-t p-3">
+
+                <div
+                    class="flex items-center p-1 bg-white rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                    <div class="flex items-center w-full">
+                        <!-- Imagen de perfil -->
+                        <div :class="{'hidden': !isSidebarOpen, 'block': isSidebarOpen}"
+                            class="w-12 h-12 rounded-full border-2 border-purple-500 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1624561172888-ac93c696e10c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjJ8fHVzZXJzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60"
+                                alt="Profile Image" class="w-full h-full object-cover">
+                        </div>
+                        <!-- Información del perfil -->
+                        <div :class="{'hidden': !isSidebarOpen, 'pr-2.5 ml-4': isSidebarOpen}"
+                            class="flex-1 cursor-pointer select-none">
+                            <h3 class="text-gray-600 font-medium text-sm truncate font-jakarta">Brayan Capa M.</h3>
+                            <p class="text-gray-500 text-xs truncate font-jakarta">admin@gmail.com</p>
+                        </div>
+                        <!-- Icono de menú -->
+                        <div x-data="{ active: false, rotated: false }"
+                            class="cursor-pointer select-none relative ml-auto sm:ml-0">
+                            <div :class="rotated ? 'transform rotate-90' : ''"
+                                class="p-3 inline-flex items-center justify-center transition-transform duration-500"
+                                @click="rotated = !rotated; active = !active" @click.away="active = false">
+                                <i :class="rotated ? 'transform rotate-90' : ''"
+                                    class="material-icons text-gray-600 transition-transform duration-500">
+                                    menu_open
+                                </i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </aside>
+
+        <div class="flex flex-col flex-1 h-full overflow-hidden">
+
+            <!-- Navbar -->
+            <header class="flex-shrink-0 shadow-sm bg-gray-100">
+                <div class="flex items-center justify-between p-4">
+
+                    <!-- Navbar left -->
+                    <div class="flex items-center space-x-3">
+                        <span
+                            class="text-lg font-outfit font-semibold tracking-wider uppercase lg:hidden text-slate-800 font-jakarta">BM</span>
+                        <!-- Toggle sidebar button -->
+                        <button @click="toggleSidbarMenu()"
+                            class="p-2 rounded-md focus:outline-none focus:ring flex items-center justify-center">
+                            <span :class="{'transform transition-transform -rotate-180': isSidebarOpen}"
+                                class="material-icons text-gray-600"
+                                :class="{'transform transition-transform rotate-180': isSidebarOpen}">
+                                menu_open
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Fecha y Hora -->
+                    <div class="text-center mx-auto flex items-center justify-center text-slate-900 backdrop-blur-md">
+                        <div class="ml-auto hidden md:block">
+                            <h8 class="text-xs font-semibold tracking-wider uppercase">
+                                <strong class="font-outfit" id="fecha"></strong>
+                            </h8>
+                            <div class="reloj text-xs">
+                                <span class="font-jakarta" id="tiempo"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navbar right -->
+                    <div class="relative flex items-center space-x-3">
+
+                        <div id="header"  class="items-center hidden space-x-3 md:flex">
+                            <!-- Notification Button -->
+                            <div class="relative" x-data="{ isOpen: false }">
+                                <!-- red dot -->
+                                <div class="absolute right-0 p-1 bg-red-400 rounded-full animate-ping"></div>
+                                <div class="absolute right-0 p-1 bg-red-400 border rounded-full"></div>
+                                <button @click="isOpen = !isOpen"
+                                    class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 focus:outline-none focus:ring">
+                                    <svg class="w-6 h-6 text-slate-900" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                    </svg>
+                                </button>
+
+                                <!-- Dropdown card -->
+                                <div @click.away="isOpen = false" x-show.transition.opacity="isOpen"
+                                    class="absolute w-48 max-w-md mt-3 transform bg-white rounded-md shadow-lg -translate-x-3/4 min-w-max">
+                                    <div class="p-4 font-medium border-b">
+                                        <span class="text-gray-800">Notificación</span>
+                                    </div>
+                                    <ul class="flex flex-col p-2 my-2 space-y-1">
+                                        <li>
+                                            <a href="#"
+                                                class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Productos
+                                                agotados</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Productos
+                                                vencidos</a>
+                                        </li>
+                                    </ul>
+                                    <div class="flex items-center justify-center p-4 text-blue-700 underline border-t">
+                                        <a href="#">Ver todo</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Services Button -->
+                            <div x-data="{ isOpen: false }">
+                                <button @click="isOpen = !isOpen"
+                                    class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 focus:outline-none focus:ring">
+                                    <svg class="w-6 h-6 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                    </svg>
+                                </button>
+
+                                <!-- Dropdown -->
+                                <div @click.away="isOpen = false" @keydown.escape="isOpen = false"
+                                    x-show.transition.opacity="isOpen"
+                                    class="absolute mt-3 transform bg-white rounded-md shadow-lg -translate-x-3/4 min-w-max">
+                                    <div class="p-4 text-lg font-medium border-b">Redes Sociales</div>
+                                    <ul class="flex flex-col p-2 my-3 space-y-3">
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-start px-2 py-1 space-x-2 rounded-md hover:bg-gray-100">
+                                                <span class="block mt-1">
+                                                    <svg class="w-6 h-6 text-gray-500"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path fill="#fff" d="M12 14l9-5-9-5-9 5 9 5z" />
+                                                        <path fill="#fff"
+                                                            d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                                                    </svg>
+                                                </span>
+                                                <span class="flex flex-col">
+                                                    <span class="text-lg">Walkyn Gaming</span>
+                                                    <span class="text-sm text-gray-400">Business Manager</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-start px-2 py-1 space-x-2 rounded-md hover:bg-gray-100">
+                                                <span class="block mt-1">
+                                                    <svg class="w-6 h-6 text-gray-500"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                                                    </svg>
+                                                </span>
+                                                <span class="flex flex-col">
+                                                    <span class="text-lg">Instagram</span>
+                                                    <span class="text-sm text-gray-400">Business Manager</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Options Button -->
+                            <div class="relative" x-data="{ isOpen: false }">
+                                <button @click="isOpen = !isOpen"
+                                    class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 focus:outline-none focus:ring">
+                                    <svg class="w-6 h-6 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                    </svg>
+                                </button>
+
+                                <!-- Dropdown card -->
+                                <div @click.away="isOpen = false" x-show.transition.opacity="isOpen"
+                                    class="absolute w-40 max-w-sm mt-3 transform bg-white rounded-md shadow-lg -translate-x-3/4 min-w-max">
+                                    <div class="p-4 font-medium border-b">
+                                        <span class="text-gray-800">Configuración</span>
+                                    </div>
+                                    <ul class="flex flex-col p-2 my-2 space-y-1">
+                                        <li>
+                                            <a href="#"
+                                                class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Tema</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Idioma</a>
+                                        </li>
+                                    </ul>
+                                    <div class="flex items-center justify-center p-4 text-blue-700 border-t">
+                                        <a href="#">Ver todo</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- avatar button -->
+                        <div class="relative" x-data="{ isOpen: false }">
+                            <button @click="isOpen = !isOpen"
+                                class="p-1 bg-gray-200 rounded-full focus:outline-none focus:ring">
+                                <img class="object-cover w-8 h-8 rounded-full"
+                                    src="https://images.unsplash.com/photo-1624561172888-ac93c696e10c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjJ8fHVzZXJzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60"
+                                    alt="Business Manager" />
+                            </button>
+
+                            <!-- green dot -->
+                            <div class="absolute right-0 p-1 bg-green-400 rounded-full bottom-3 animate-ping">
+                            </div>
+                            <div class="absolute right-0 p-1 bg-green-400 border border-white rounded-full bottom-3">
+                            </div>
+
+                            <!-- Dropdown card -->
+                            <div id="header"  @click.away="isOpen = false" x-show.transition.opacity="isOpen"
+                                class="absolute mt-3 bg-white rounded-md shadow-lg min-w-max" style="right: 0;">
+                                <div class="flex flex-col p-4 space-y-1 font-medium border-b">
+                                    <span class="text-gray-800">Business Manager</span>
+                                    <span class="text-sm text-gray-400">Bussinesmanager.pe@gmail.com</span>
+                                </div>
+                                <ul class="flex flex-col p-2 my-2 space-y-1">
+                                    <li>
+                                        <a href="#"
+                                            class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Administrar
+                                            Cajeros</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"
+                                            class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Configuracion</a>
+                                    </li>
+                                </ul>
+                                <div class="flex items-center justify-center p-4 text-blue-700 border-t">
+                                    <a href="/src/index.html">Cerrar Sesión</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </header>
+
+            <!-- Main content -->
+            <main id="dynamicContent"
+                class="flex-1 max-h-full overflow-hidden overflow-y-scroll w-full bg-zinc-50 p-2">
+                <div class="relative shadow-md sm:rounded-lg">
+                    <div
+                        class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
+                        <div class="py-3 px-3">
+                            <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction"
+                                class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                                type="button">
+                                <span class="sr-only">Action button</span>
+                                Acción
+                                <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="m1 1 4 4 4-4" />
+                                </svg>
+                            </button>
+                            <!-- Dropdown menu -->
+                            <div id="dropdownAction"
+                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
+                                    <li>
+                                        <a href="#"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reward</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Promote</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Activate
+                                            account</a>
+                                    </li>
+                                </ul>
+                                <div class="py-1">
+                                    <a href="#"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Eliminar
+                                        Usuario</a>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="table-search" class="sr-only">Buscar</label>
+                        <div class="relative px-3">
+                            <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-6 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                </svg>
+                            </div>
+                            <input type="text" id="table-search-users"
+                                class="font-outfit block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Buscar clientes">
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto ">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="p-4">
+                                    <div class="flex items-center">
+                                        <input id="checkbox-all-search" type="checkbox"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Nombre
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Identificación
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Telefono
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Modificar
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="w-4 p-4">
+                                    <div class="flex items-center">
+                                        <input id="checkbox-table-search-1" type="checkbox"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                                    </div>
+                                </td>
+                                <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                    <img class="w-10 h-10 rounded-full"
+                                        src="https://images.unsplash.com/photo-1624561172888-ac93c696e10c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjJ8fHVzZXJzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60"
+                                        alt="Jese image">
+                                    <div class="ps-3">
+                                        <div class="text-base font-semibold">Neil Sims</div>
+                                        <div class="font-normal text-gray-500">neil.sims@flowbite.com</div>
+                                    </div>
+                                </th>
+                                <td class="px-6 py-4">
+                                    React Developer
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="w-4 p-4">
+                                    <div class="flex items-center">
+                                        <input id="checkbox-table-search-2" type="checkbox"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-table-search-2" class="sr-only">checkbox</label>
+                                    </div>
+                                </td>
+                                <th scope="row"
+                                    class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <img class="w-10 h-10 rounded-full"
+                                        src="https://images.unsplash.com/photo-1624561172888-ac93c696e10c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjJ8fHVzZXJzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60"
+                                        alt="Jese image">
+                                    <div class="ps-3">
+                                        <div class="text-base font-semibold">Bonnie Green</div>
+                                        <div class="font-normal text-gray-500">bonnie@flowbite.com</div>
+                                    </div>
+                                </th>
+                                <td class="px-6 py-4">
+                                    Designer
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="w-4 p-4">
+                                    <div class="flex items-center">
+                                        <input id="checkbox-table-search-2" type="checkbox"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-table-search-2" class="sr-only">checkbox</label>
+                                    </div>
+                                </td>
+                                <th scope="row"
+                                    class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <img class="w-10 h-10 rounded-full"
+                                        src="https://images.unsplash.com/photo-1624561172888-ac93c696e10c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjJ8fHVzZXJzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60"
+                                        alt="Jese image">
+                                    <div class="ps-3">
+                                        <div class="text-base font-semibold">Jese Leos</div>
+                                        <div class="font-normal text-gray-500">jese@flowbite.com</div>
+                                    </div>
+                                </th>
+                                <td class="px-6 py-4">
+                                    Vue JS Developer
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="w-4 p-4">
+                                    <div class="flex items-center">
+                                        <input id="checkbox-table-search-2" type="checkbox"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-table-search-2" class="sr-only">checkbox</label>
+                                    </div>
+                                </td>
+                                <th scope="row"
+                                    class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <img class="w-10 h-10 rounded-full"
+                                        src="https://images.unsplash.com/photo-1624561172888-ac93c696e10c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjJ8fHVzZXJzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60"
+                                        alt="Jese image">
+                                    <div class="ps-3">
+                                        <div class="text-base font-semibold">Thomas Lean</div>
+                                        <div class="font-normal text-gray-500">thomes@flowbite.com</div>
+                                    </div>
+                                </th>
+                                <td class="px-6 py-4">
+                                    UI/UX Engineer
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+                                </td>
+                            </tr>
+                            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="w-4 p-4">
+                                    <div class="flex items-center">
+                                        <input id="checkbox-table-search-3" type="checkbox"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-table-search-3" class="sr-only">checkbox</label>
+                                    </div>
+                                </td>
+                                <th scope="row"
+                                    class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <img class="w-10 h-10 rounded-full"
+                                        src="https://images.unsplash.com/photo-1624561172888-ac93c696e10c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjJ8fHVzZXJzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60"
+                                        alt="Jese image">
+                                    <div class="ps-3">
+                                        <div class="text-base font-semibold">Leslie Livingston</div>
+                                        <div class="font-normal text-gray-500">leslie@flowbite.com</div>
+                                    </div>
+                                </th>
+                                <td class="px-6 py-4">
+                                    SEO Specialist
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div> Offline
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            
+            </main>
+
+
+
+            <footer class="sticky-footer bg-white py-2">
+                <div class="container mx-auto my-auto">
+                    <div class="copyright text-center my-auto text-sm text-gray-500">
+                        <span>&copy; Todos los derechos reservados <a href="https://walkyngamingyt.com/" target="_blank"
+                                class="text-blue-500">Walkyn Gaming</a></span>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+</body>
+<script src="../../../assets/js/flowbite.min.js"></script>
+<script src="../../../assets/js/SidebarMenu.js"></script>
+<script src="../../../assets/js/fecha-hora.js"></script>
+
+</html>

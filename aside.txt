@@ -1,0 +1,11 @@
+        <aside x-data="{ open: true }" x-show="open"
+            class="w-1/5 p-4 bg-gray-100 shadow-lg flex flex-col h-screen overflow-y-auto">
+
+                                <!-- Icono de menú -->
+                    <div @click="open = !open"
+                        class="cursor-pointer select-none relative flex items-center justify-center w-full">
+                        <div class="p-2 inline-flex items-center justify-center transition-transform duration-500">
+                            <i :class="open ? 'transform rotate-180' : ''"
+                                class="material-icons text-gray-600 transition-transform duration-500">menu_open</i>
+                        </div>
+                    </div>

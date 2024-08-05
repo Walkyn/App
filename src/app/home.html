@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Manager</title>
+    <link rel="icon" href="../assets/img/ico-logo.png" type="image/png">
+    <link href="../output.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/material-icons.css">
+    <script src="../assets/js/alpine.js" defer></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap">
+    <script src="../assets/js/apexcharts.js"></script>
+</head>
+
+<body>
+    <div class="flex h-screen overflow-y-hidden bg-white" x-data="setup()"
+        x-init="$refs.loading.classList.add('hidden')">
+
+        <!-- Loading screen -->
+        <div x-ref="loading"
+            class="fixed inset-0 z-50 flex items-center justify-center text-white bg-black bg-opacity-50"
+            style="backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px)">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+
+        <!-- Sidebar backdrop -->
+        <div x-show.in.out.opacity="isSidebarOpen" class="fixed inset-0 z-10 bg-black bg-opacity-20 lg:hidden"
+            style="backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px)"></div>
+
+        <aside x-transition:enter="transition transform duration-300"
+            x-transition:enter-start="-translate-x-full opacity-30  ease-in"
+            x-transition:enter-end="translate-x-0 opacity-100 ease-out"
+            x-transition:leave="transition transform duration-900"
+            x-transition:leave-start="translate-x-0 opacity-100 ease-out"
+            x-transition:leave-end="-translate-x-full opacity-0 ease-in"
+            class="bg-gray-100 fixed inset-y-0 z-10 flex flex-col flex-shrink-0 w-64 max-h-screen overflow-hidden transition-all transform border-r shadow-lg lg:z-auto lg:static lg:shadow-none "
+            :class="{'-translate-x-full lg:translate-x-0 lg:w-20': !isSidebarOpen}">
+
+            <!-- sidebar header -->
+            <div class="flex items-center justify-between flex-shrink-0 p-2"
+                :class="{'lg:justify-center': !isSidebarOpen}">
+                <span
+                    class="flex items-center p-2 text-xl font-semibold leading-8 tracking-wider uppercase whitespace-nowrap"
+                    style="color: #fff;">
+                    <img src="../assets/img/ico-logo.png" alt="Logo" class="w-10">
+                    <span :class="{'lg:hidden': !isSidebarOpen}" class="ml-2 text-slate-800">B-MANAGER</span>
+                </span>
+                <button @click="toggleSidbarMenu()" class="p-2 rounded-md lg:hidden">
+                    <span :class="{'transform transition-transform -rotate-180': isSidebarOpen}"
+                        class="material-icons text-gray-600"
+                        :class="{'transform transition-transform rotate-180': isSidebarOpen}">
+                        menu_open
+                    </span>
+                </button>
+            </div>
+
+            <nav class="flex-1 overflow-hidden hover:overflow-y-auto custom-scrollbar">
+                <ul class="pr-3 pl-3 overflow-hidden flex flex-col space-y-2">
+
+                    <div class="flex-grow overflow-y-auto custom-scrollbar pb-2">
+                        <h2 class="text-gray-600 text-sm font-jakarta pb-1">Menu</h2>
+
+                        <!-- Dashboard -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">dashboard</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Dashboard</span>
+                        </div>
+
+                        <!-- Dashboard -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">shopping_cart</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Ventas</span>
+                        </div>
+
+                        <!-- Clientes -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">people</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Clientes</span>
+                        </div>
+
+                        <!-- Productos -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">store</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Productos</span>
+                        </div>
+
+                        <!-- Inventario -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">inventory</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Inventario</span>
+                        </div>
+
+                        <!-- Informe -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">bar_chart</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Informe</span>
+                        </div>
+
+                        <!-- Cierre -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">receipt</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Cierre</span>
+                        </div>
+
+                        <!-- Reportes -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">assessment</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Reportes</span>
+                        </div>
+
+                        <h2 class="text-gray-500 mt-4 text-sm font-jakarta pb-2">Configuración</h2>
+
+                        <!-- Notificaciones -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-200 group cursor-pointer select-none relative">
+                            <div :class="{'justify-center': !isSidebarOpen, 'justify-start': isSidebarOpen}"
+                                class="flex items-center w-full">
+                                <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-700"
+                                    :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">notifications</i>
+                                <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                    class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Notificaciones</span>
+                                <!-- Punto rojo para notificación -->
+                                <div
+                                    class="absolute top-2.5 right-4 transform translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-red-500 rounded-full animate-pulse z-10">
+                                </div>
+                            </div>
+                            <div :class="{'hidden': !isSidebarOpen, 'flex': isSidebarOpen}"
+                                class="bg-purple-500 text-white rounded-lg h-6 w-8 items-center justify-center text-sm font-semibold transition-opacity duration-300">
+                                12
+                            </div>
+                        </div>
+
+
+
+                        <!-- Ajustes -->
+                        <div
+                            class="flex items-center p-2.5 bg-gray-100 rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                            <i class="material-icons text-gray-600 transition-colors duration-300 group-hover:text-purple-500"
+                                :class="{'mx-auto': !isSidebarOpen, 'ml-2': isSidebarOpen}">settings</i>
+                            <span :class="{'hidden': !isSidebarOpen, 'ml-4': isSidebarOpen}"
+                                class="text-gray-600 text-sm font-jakarta transition-colors duration-300 group-hover:text-slate-900">Más</span>
+                        </div>
+                    </div>
+                </ul>
+            </nav>
+
+
+
+            <div class="flex border-t p-3">
+
+                <div
+                    class="flex items-center p-1 bg-white rounded-lg transition-colors duration-300 hover:bg-purple-100 group cursor-pointer select-none">
+                    <div class="flex items-center w-full">
+                        <!-- Imagen de perfil -->
+                        <div :class="{'hidden': !isSidebarOpen, 'block': isSidebarOpen}"
+                            class="w-12 h-12 rounded-full border-2 border-purple-500 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1624561172888-ac93c696e10c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjJ8fHVzZXJzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60"
+                                alt="Profile Image" class="w-full h-full object-cover">
+                        </div>
+                        <!-- Información del perfil -->
+                        <div :class="{'hidden': !isSidebarOpen, 'pr-2.5 ml-4': isSidebarOpen}"
+                            class="flex-1 cursor-pointer select-none">
+                            <h3 class="text-gray-600 font-medium text-sm truncate font-jakarta">Brayan Capa M.</h3>
+                            <p class="text-gray-500 text-xs truncate font-jakarta">admin@gmail.com</p>
+                        </div>
+                        <!-- Icono de menú -->
+                        <div x-data="{ active: false, rotated: false }"
+                            class="cursor-pointer select-none relative ml-auto sm:ml-0">
+                            <div :class="rotated ? 'transform rotate-90' : ''"
+                                class="p-3 inline-flex items-center justify-center transition-transform duration-500"
+                                @click="rotated = !rotated; active = !active" @click.away="active = false">
+                                <i :class="rotated ? 'transform rotate-90' : ''"
+                                    class="material-icons text-gray-600 transition-transform duration-500">
+                                    menu_open
+                                </i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </aside>
+
+        <div class="flex flex-col flex-1 h-full overflow-hidden">
+
+            <!-- Navbar -->
+            <header class="flex-shrink-0 shadow-sm bg-gray-100">
+                <div class="flex items-center justify-between p-4">
+
+                    <!-- Navbar left -->
+                    <div class="flex items-center space-x-3">
+                        <span
+                            class="text-lg font-outfit font-semibold tracking-wider uppercase lg:hidden text-slate-800 font-jakarta">BM</span>
+                        <!-- Toggle sidebar button -->
+                        <button @click="toggleSidbarMenu()"
+                            class="p-2 rounded-md focus:outline-none focus:ring flex items-center justify-center">
+                            <span :class="{'transform transition-transform -rotate-180': isSidebarOpen}"
+                                class="material-icons text-gray-600"
+                                :class="{'transform transition-transform rotate-180': isSidebarOpen}">
+                                menu_open
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Fecha y Hora -->
+                    <div class="text-center mx-auto flex items-center justify-center text-slate-900 backdrop-blur-md">
+                        <div class="ml-auto hidden md:block">
+                            <h8 class="text-xs font-semibold tracking-wider uppercase">
+                                <strong class="font-outfit" id="fecha"></strong>
+                            </h8>
+                            <div class="reloj text-xs">
+                                <span class="font-jakarta" id="tiempo"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navbar right -->
+                    <div class="relative flex items-center space-x-3">
+
+                        <div class="items-center hidden space-x-3 md:flex">
+                            <!-- Notification Button -->
+                            <div class="relative" x-data="{ isOpen: false }">
+                                <!-- red dot -->
+                                <div class="absolute right-0 p-1 bg-red-400 rounded-full animate-ping"></div>
+                                <div class="absolute right-0 p-1 bg-red-400 border rounded-full"></div>
+                                <button @click="isOpen = !isOpen"
+                                    class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 focus:outline-none focus:ring">
+                                    <svg class="w-6 h-6 text-slate-900" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                    </svg>
+                                </button>
+
+                                <!-- Dropdown card -->
+                                <div @click.away="isOpen = false" x-show.transition.opacity="isOpen"
+                                    class="absolute w-48 max-w-md mt-3 transform bg-white rounded-md shadow-lg -translate-x-3/4 min-w-max">
+                                    <div class="p-4 font-medium border-b">
+                                        <span class="text-gray-800">Notificación</span>
+                                    </div>
+                                    <ul class="flex flex-col p-2 my-2 space-y-1">
+                                        <li>
+                                            <a href="#"
+                                                class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Productos
+                                                agotados</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Productos
+                                                vencidos</a>
+                                        </li>
+                                    </ul>
+                                    <div class="flex items-center justify-center p-4 text-blue-700 underline border-t">
+                                        <a href="#">Ver todo</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Services Button -->
+                            <div x-data="{ isOpen: false }">
+                                <button @click="isOpen = !isOpen"
+                                    class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 focus:outline-none focus:ring">
+                                    <svg class="w-6 h-6 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                    </svg>
+                                </button>
+
+                                <!-- Dropdown -->
+                                <div @click.away="isOpen = false" @keydown.escape="isOpen = false"
+                                    x-show.transition.opacity="isOpen"
+                                    class="absolute mt-3 transform bg-white rounded-md shadow-lg -translate-x-3/4 min-w-max">
+                                    <div class="p-4 text-lg font-medium border-b">Redes Sociales</div>
+                                    <ul class="flex flex-col p-2 my-3 space-y-3">
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-start px-2 py-1 space-x-2 rounded-md hover:bg-gray-100">
+                                                <span class="block mt-1">
+                                                    <svg class="w-6 h-6 text-gray-500"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path fill="#fff" d="M12 14l9-5-9-5-9 5 9 5z" />
+                                                        <path fill="#fff"
+                                                            d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                                                    </svg>
+                                                </span>
+                                                <span class="flex flex-col">
+                                                    <span class="text-lg">Walkyn Gaming</span>
+                                                    <span class="text-sm text-gray-400">Business Manager</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-start px-2 py-1 space-x-2 rounded-md hover:bg-gray-100">
+                                                <span class="block mt-1">
+                                                    <svg class="w-6 h-6 text-gray-500"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                                                    </svg>
+                                                </span>
+                                                <span class="flex flex-col">
+                                                    <span class="text-lg">Instagram</span>
+                                                    <span class="text-sm text-gray-400">Business Manager</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Options Button -->
+                            <div class="relative" x-data="{ isOpen: false }">
+                                <button @click="isOpen = !isOpen"
+                                    class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 focus:outline-none focus:ring">
+                                    <svg class="w-6 h-6 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                    </svg>
+                                </button>
+
+                                <!-- Dropdown card -->
+                                <div @click.away="isOpen = false" x-show.transition.opacity="isOpen"
+                                    class="absolute w-40 max-w-sm mt-3 transform bg-white rounded-md shadow-lg -translate-x-3/4 min-w-max">
+                                    <div class="p-4 font-medium border-b">
+                                        <span class="text-gray-800">Configuración</span>
+                                    </div>
+                                    <ul class="flex flex-col p-2 my-2 space-y-1">
+                                        <li>
+                                            <a href="#"
+                                                class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Tema</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Idioma</a>
+                                        </li>
+                                    </ul>
+                                    <div class="flex items-center justify-center p-4 text-blue-700 border-t">
+                                        <a href="#">Ver todo</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- avatar button -->
+                        <div class="relative" x-data="{ isOpen: false }">
+                            <button @click="isOpen = !isOpen"
+                                class="p-1 bg-gray-200 rounded-full focus:outline-none focus:ring">
+                                <img class="object-cover w-8 h-8 rounded-full"
+                                    src="https://images.unsplash.com/photo-1624561172888-ac93c696e10c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjJ8fHVzZXJzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60"
+                                    alt="Business Manager" />
+                            </button>
+
+                            <!-- green dot -->
+                            <div class="absolute right-0 p-1 bg-green-400 rounded-full bottom-3 animate-ping">
+                            </div>
+                            <div class="absolute right-0 p-1 bg-green-400 border border-white rounded-full bottom-3">
+                            </div>
+
+                            <!-- Dropdown card -->
+                            <div @click.away="isOpen = false" x-show.transition.opacity="isOpen"
+                                class="absolute mt-3 bg-white rounded-md shadow-lg min-w-max" style="right: 0;">
+                                <div class="flex flex-col p-4 space-y-1 font-medium border-b">
+                                    <span class="text-gray-800">Business Manager</span>
+                                    <span class="text-sm text-gray-400">Bussinesmanager.pe@gmail.com</span>
+                                </div>
+                                <ul class="flex flex-col p-2 my-2 space-y-1">
+                                    <li>
+                                        <a href="#"
+                                            class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Administrar
+                                            Cajeros</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"
+                                            class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Configuracion</a>
+                                    </li>
+                                </ul>
+                                <div class="flex items-center justify-center p-4 text-blue-700 border-t">
+                                    <a href="/src/index.html">Cerrar Sesión</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </header>
+
+
+            <!-- Main content -->
+            <main id="dynamicContent" class="flex-1 max-h-full overflow-hidden overflow-y-scroll w-full bg-zinc-50">
+
+
+                <div class="flex flex-wrap">
+                    <div class="p-4 w-full lg:w-2/3">
+                        <div class="py-4 px-6 bg-white rounded-lg shadow-md">
+                            <h2 class="text-lg font-semibold mb-4">Artículos más vendidos</h2>
+
+                            <!-- Contenedor de desplazamiento horizontal para la tabla -->
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white">
+                                    <thead class="bg-zinc-50 shadow-md rounded-md">
+                                        <tr>
+                                            <th class="text-left py-2 px-4">Artículo</th>
+                                            <th class="text-left py-2 px-4">Stock</th>
+                                            <th class="text-left py-2 px-4">Estado</th>
+                                            <th class="text-center py-2 px-4">Cantidad</th>
+                                            <th class="text-left py-2 px-4">Ventas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-left p-3">
+                                                Four Pack Agua Tónica
+                                                <div class="text-xs text-gray-300">123456789012</div>
+                                            </td>
+                                            <td class="text-left p-3">33</td>
+                                            <td class="text-left p-3">
+                                                <div class="relative bg-gray-100 h-2 rounded shadow-md">
+                                                    <div class="bg-yellow-400 h-2 rounded" style="width: 53.33%;"></div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center p-3">8</td>
+                                            <td class="text-left p-3">S/ 595.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left p-3">
+                                                Fernet
+                                                <div class="text-xs text-gray-300">234567890123</div>
+                                            </td>
+                                            <td class="text-left p-3">18</td>
+                                            <td class="text-left p-3">
+                                                <div class="relative bg-gray-100 h-2 rounded shadow-md">
+                                                    <div class="bg-blue-400 h-2 rounded" style="width: 20%;">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center p-3">3</td>
+                                            <td class="text-left p-3">S/ 89.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left p-3">
+                                                Bolígrafo
+                                                <div class="text-xs text-gray-300">345678901234</div>
+                                            </td>
+                                            <td class="text-left p-3">25</td>
+                                            <td class="text-left p-3">
+                                                <div class="relative bg-gray-100 h-2 rounded shadow-md">
+                                                    <div class="bg-purple-400 h-2 rounded" style="width: 13.33%;"></div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center p-3">2</td>
+                                            <td class="text-left p-3">S/ 2.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left p-3">
+                                                Manzanas
+                                                <div class="text-xs text-gray-300">456789012345</div>
+                                            </td>
+                                            <td class="text-left p-3">84</td>
+                                            <td class="text-left p-3">
+                                                <div class="relative bg-gray-100 h-2 rounded shadow-md">
+                                                    <div class="bg-green-400 h-2 rounded" style="width: 6.67%;">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center p-3">1</td>
+                                            <td class="text-left p-3">S/ 3.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left p-3">
+                                                A31
+                                                <div class="text-xs text-gray-300">567890123456</div>
+                                            </td>
+                                            <td class="text-left p-3">-50</td>
+                                            <td class="text-left p-3">
+                                                <div class="relative bg-gray-100 h-2 rounded shadow-md">
+                                                    <div class="bg-red-400 h-2 rounded" style="width: 6.67%;">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center p-3">1</td>
+                                            <td class="text-left p-3">S/ 150.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Contenedor Ventas-->
+                    <div class="p-4 w-full lg:w-1/3">
+                        <div class="space-y-4">
+                            <div class="bg-purple-500 text-white p-4 rounded-lg shadow-lg">
+                                <h2 class="text-xl font-bold">Ventas hoy</h2>
+                                <p>S/ 0.00</p>
+                                <p class="text-sm">↓ 0 % Desde ayer</p>
+                                <input type="range" min="0" max="100" value="0" class="w-full mt-2" />
+                            </div>
+                            
+                            <div class="bg-blue-500 text-white p-4 rounded-lg shadow-lg">
+                                <h2 class="text-xl font-bold">Ventas semana</h2>
+                                <p>S/ 0.00</p>
+                                <p class="text-sm">↓ 0 % Desde la semana pasada</p>
+                                <input type="range" min="0" max="100" value="0" class="w-full mt-2" />
+                            </div>
+                            <div class="bg-teal-500 text-white p-4 rounded-lg shadow-lg">
+                                <h2 class="text-xl font-bold">Ventas mes</h2>
+                                <p>S/ 1,685.00</p>
+                                <p class="text-sm">↓ 0 % Desde el mes pasado</p>
+                                <input type="range" min="0" max="100" value="0" class="w-full mt-2" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Graficos-->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+                    <!-- Gráfico de Compras -->
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4">Compra de los últimos 10 días</h2>
+                        <div id="comprasChart" style="height: 400px;"></div>
+                    </div>
+                    <!-- Gráfico de Ventas -->
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4">Venta en los últimos 12 meses</h2>
+                        <div id="ventasChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+
+
+            </main>
+
+
+            <footer class="sticky-footer bg-white py-2">
+                <div class="container mx-auto my-auto">
+                    <div class="copyright text-center my-auto text-sm text-gray-500">
+                        <span>&copy; Todos los derechos reservados <a href="https://walkyngamingyt.com/" target="_blank"
+                                class="text-blue-500">Walkyn Gaming</a></span>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+</body>
+<script src="../assets/js/graficos.js"></script>
+<script src="../assets/js/SidebarMenu.js"></script>
+<script src="../assets/js/fecha-hora.js"></script>
+
+</html>

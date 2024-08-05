@@ -1,0 +1,120 @@
+.custom-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow-y: scroll;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+body,
+h1,
+h2,
+h3,
+p,
+img,
+span {
+  user-select: none;
+}
+
+h1 {
+  font-size: 4vmin;
+  position: absolute;
+}
+
+.border-letra {
+  color: black;
+  text-shadow:
+    -1px -1px 0 white,
+    1px -1px 0 white,
+    -1px 1px 0 white,
+    1px 1px 0 white;
+}
+
+.wave {
+  color: #cf213e;
+  animation: wave 3s ease-in-out infinite;
+}
+
+@keyframes wave {
+
+  0%,
+  100% {
+    clip-path: polygon(0% 47%,
+        10% 48%,
+        33% 54%,
+        54% 60%,
+        70% 61%,
+        84% 59%,
+        100% 52%,
+        100% 100%,
+        0% 100%);
+  }
+
+  50% {
+    clip-path: polygon(0% 60%,
+        15% 65%,
+        34% 66%,
+        51% 62%,
+        67% 50%,
+        84% 45%,
+        100% 46%,
+        100% 100%,
+        0% 100%);
+  }
+}
+
+
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+#ripple {
+  min-height: 100vh;
+  background: url('../img/fondo-login.jpg') center center / cover no-repeat;
+}
+
+.ripple {
+  width: 100%;
+  height: 100%;
+  background: url('../img/fondo-login.jpg') center center / cover no-repeat;
+}
+
+.input[type="number"]::-webkit-inner-spin-button,
+.input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+input:focus {
+  outline: none;
+  border-color: #5aa5fc;
+
+}
+
+select {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+select:focus {
+  outline: none;
+  border-color: #5aa5fc; 
+}
+
