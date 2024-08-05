@@ -53,11 +53,20 @@ const ventasOptions = {
     }
 };
 
+const chartUsed = [];
+
 // Renderizar los gráficos
-window.onload = function() {
+const onLoadDashboard = function() {
     const comprasChart = new ApexCharts(document.querySelector('#comprasChart'), comprasOptions);
     comprasChart.render();
 
     const ventasChart = new ApexCharts(document.querySelector('#ventasChart'), ventasOptions);
     ventasChart.render();
+    chartUsed.push(comprasChart, ventasChart);
+};
+
+const onUnmountDashboard = function() {
+    chartUsed.forEach(chart => {
+        chart.destroy();
+    });
 };
