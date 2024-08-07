@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       boxShadow: {
-        'green-3d': '0 4px 8px rgba(34, 197, 94, 0.5)', // Ajusta el color y el tamaño de la sombra aquí
+        'green-3d': '0 4px 8px rgba(34, 197, 94, 0.5)',
       },
       fontFamily: {
         outfit: ['Outfit', 'sans-serif'],
