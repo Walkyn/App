@@ -3,10 +3,11 @@ let htmlPage = "<h2>Pagina dinamica</h2>";
 const paginas = {
   ventas: "../views/ventas/ventas.html",
   dashboard: "../views/dashboard/dashboard.html",
+  clientes: "../views/clientes/clientes.html",
 };
 
 
-let pagina = "ventas";
+let pagina = "dashboard";
 
 function setInnerHTML(elm, html) {
   elm.innerHTML = html;
