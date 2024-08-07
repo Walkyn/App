@@ -1,13 +1,14 @@
-
+<!-- Contenido para cargar en el main -->
 <div class="flex flex-wrap">
-    <div class="p-4 w-full lg:w-2/3">
-        <div class="py-4 px-6 bg-white rounded-lg shadow-md">
-            <h2 class="text-lg font-semibold mb-4">Artículos más vendidos</h2>
+    <!-- Contenedor de Artículos más vendidos -->
+    <div class="p-4 w-full lg:w-2/3 flex-grow">
+        <div class="py-4 px-6 bg-white rounded-lg shadow-md h-full">
+            <h2 class="text-lg font-jakarta mb-4 font-semibold">Artículos más vendidos</h2>
 
             <!-- Contenedor de desplazamiento horizontal para la tabla -->
-            <div class="overflow-x-auto">
+            <div class="max-h-64 scrollbar overflow-x-auto">
                 <table class="min-w-full bg-white">
-                    <thead class="bg-zinc-50 shadow-md rounded-md">
+                    <thead class="bg-zinc-50 shadow-md rounded-md font-jakarta">
                         <tr>
                             <th class="text-left py-2 px-4">Artículo</th>
                             <th class="text-left py-2 px-4">Stock</th>
@@ -16,7 +17,21 @@
                             <th class="text-left py-2 px-4">Ventas</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="text-outfit text-base">
+                        <tr>
+                            <td class="text-left p-3">
+                                Four Pack Agua Tónica
+                                <div class="text-xs text-gray-300">123456789012</div>
+                            </td>
+                            <td class="text-left p-3">33</td>
+                            <td class="text-left p-3">
+                                <div class="relative bg-gray-100 h-2 rounded shadow-md">
+                                    <div class="bg-yellow-400 h-2 rounded" style="width: 53.33%;"></div>
+                                </div>
+                            </td>
+                            <td class="text-center p-3">8</td>
+                            <td class="text-left p-3">S/ 595.00</td>
+                        </tr>
                         <tr>
                             <td class="text-left p-3">
                                 Four Pack Agua Tónica
@@ -90,29 +105,44 @@
                             <td class="text-center p-3">1</td>
                             <td class="text-left p-3">S/ 150.00</td>
                         </tr>
+                        <tr>
+                            <td class="text-left p-3">
+                                Bolígrafo
+                                <div class="text-xs text-gray-300">345678901234</div>
+                            </td>
+                            <td class="text-left p-3">25</td>
+                            <td class="text-left p-3">
+                                <div class="relative bg-gray-100 h-2 rounded shadow-md">
+                                    <div class="bg-purple-400 h-2 rounded" style="width: 13.33%;"></div>
+                                </div>
+                            </td>
+                            <td class="text-center p-3">2</td>
+                            <td class="text-left p-3">S/ 2.00</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!--Contenedor Ventas-->
-    <div class="p-4 w-full lg:w-1/3">
-        <div class="space-y-4">
-            <div class="bg-purple-500 text-white p-4 rounded-lg shadow-lg">
+    <!-- Contenedor Ventas -->
+    <div class="p-4 w-full lg:w-1/3 flex-grow">
+        <div class="h-full flex flex-col justify-between space-y-4">
+            <div class="bg-purple-500 text-white p-4 rounded-lg shadow-lg flex-1">
                 <h2 class="text-xl font-bold">Ventas hoy</h2>
                 <p>S/ 0.00</p>
                 <p class="text-sm">↓ 0 % Desde ayer</p>
                 <input type="range" min="0" max="100" value="0" class="w-full mt-2" />
             </div>
-            
-            <div class="bg-blue-500 text-white p-4 rounded-lg shadow-lg">
+
+            <div class="bg-blue-500 text-white p-4 rounded-lg shadow-lg flex-1">
                 <h2 class="text-xl font-bold">Ventas semana</h2>
                 <p>S/ 0.00</p>
                 <p class="text-sm">↓ 0 % Desde la semana pasada</p>
                 <input type="range" min="0" max="100" value="0" class="w-full mt-2" />
             </div>
-            <div class="bg-teal-500 text-white p-4 rounded-lg shadow-lg">
+
+            <div class="bg-teal-500 text-white p-4 rounded-lg shadow-lg flex-1">
                 <h2 class="text-xl font-bold">Ventas mes</h2>
                 <p>S/ 1,685.00</p>
                 <p class="text-sm">↓ 0 % Desde el mes pasado</p>
@@ -121,18 +151,24 @@
         </div>
     </div>
 </div>
+
+
 <!-- Graficos -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
-    <!-- Gráfico de Compras -->
-    <div class="bg-white p-4 rounded-lg shadow-md">
-        <h2 class="text-xl font-bold mb-4">Compra de los últimos 10 días</h2>
-        <div id="comprasChart" style="height: 400px;"></div>
-    </div>
-    <!-- Gráfico de Ventas -->
-    <div class="bg-white p-4 rounded-lg shadow-md">
-        <h2 class="text-xl font-bold mb-4">Venta en los últimos 12 meses</h2>
-        <div id="ventasChart" style="height: 400px;"></div>
-    </div>
+  <!-- Gráfico de Compras -->
+  <div class="bg-white p-4 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold font-jakarta mb-4">Compra de los últimos 10 días</h2>
+      <div id="comprasChart" style="height: 400px;"></div>
+  </div>
+  <!-- Gráfico de Ventas -->
+  <div class="bg-white p-4 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold font-jakarta mb-4">Venta en los últimos 12 meses</h2>
+      <div id="ventasChart" style="height: 400px;"></div>
+  </div>
 </div>
 
-
+<!-- <script id="mount" type="text/javascript">
+  console.log('Ejecutanto js despues de html cargado.....');
+</script>
+<script id="unmount">
+</script> -->

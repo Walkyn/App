@@ -14,9 +14,11 @@ module.exports = {
         },
       },
       maxHeight: {
+        '32': '12rem',
+        '64': '28rem',
         '128': '32rem',
         '144': '36rem',
-        '160': '40rem',
+        '160': '40.5rem',
         '192': '48rem',
         'screen-md': 'calc(100vh - 3rem)',
         'screen-lg': 'calc(100vh - 6rem)',
