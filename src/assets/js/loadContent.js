@@ -1,4 +1,3 @@
-
 let htmlPage = "<h2>Pagina dinamica</h2>";
 const paginas = {
   ventas: "../views/ventas/ventas.html",
@@ -7,93 +6,141 @@ const paginas = {
   productos: "../views/productos/registrarProductos.html",
 };
 
-
 let pagina = "dashboard";
 
-function setInnerHTML(elm, html) {
-  elm.innerHTML = html;
+let currentPage = {
+  onMountCallback: () => {},
+  onUnmountCallback: () => {},
+};
 
-  Array.from(elm.querySelectorAll("script")).forEach((oldScriptEl) => {
-    const newScriptEl = document.createElement("script");
+function setInnerHTML(html) {
+  if (currentPage) {
+    currentPage.onUnmountCallback();
+  }
 
-    Array.from(oldScriptEl.attributes).forEach((attr) => {
-       if(attr.name === "id" && attr.value === "mount") return;
-      newScriptEl.setAttribute(attr.name, attr.value);
-    });
+  const mainDocument = document.querySelector("#dynamicContent");
+  const elm = document.createElement("main");
+  elm.setAttribute("id", "dynamicContent");
+  elm.classList.add(
+    "flex-1",
+    "max-h-full",
+    "p-3",
+    "overflow-hidden",
+    "overflow-y-scroll",
+    "w-full",
+    "bg-zinc-50",
+    "scrollbar"
+  );
+  mainDocument.replaceWith(elm);
 
-    const scriptText = document.createTextNode(oldScriptEl.innerHTML);
-    newScriptEl.appendChild(scriptText);
+  // elm.innerHTML = html;
 
-    oldScriptEl.parentNode.replaceChild(newScriptEl, oldScriptEl);
-  });
+  const virtualDom = document.createElement("div");
+  virtualDom.innerHTML = html;
+
+  // unmountScript
+
+  // iterate all childrens of virtualDom
+  const childrenToAppend = [];
+  for (let i = 0; i < virtualDom.children.length; i++) {
+    const child = virtualDom.children[i];
+    // filter childs that are scripts
+    if (child.tagName === "SCRIPT" && child.id === "mount") {
+      // console.log("mount scrypt:", child.text);
+      currentPage.onMountCallback = function () {
+        "use strict";
+        eval?.(child.text);
+      };
+    } else if (child.tagName === "SCRIPT" && child.id === "unmount") {
+      // console.log("unmount scrypt:", child.text);
+      currentPage.onUnmountCallback = function () {
+        "use strict";
+        eval?.(child.text);
+      };
+    } else {
+      childrenToAppend.push(child);
+    }
+  }
+  elm.append(...childrenToAppend);
+  // virtualDom.children().forEach((child) => {
+  //   // filter childs that are scripts
+  //   if (child.tagName === "SCRIPT" && child.id === "mount") {
+  //     onMountCallback = () => eval(oldScriptEl.text);
+  //   } else if( child.tagName === "SCRIPT" && child.id === "unmount") {
+  //     onUnmountCallback = () => eval(oldScriptEl.text);
+  //   } else {
+  //     elm.appendChild(child);
+  //   }
+  // });
+  currentPage = {
+    element: elm,
+    onUnmountCallback: currentPage.onUnmountCallback,
+    onMountCallback: currentPage.onMountCallback,
+  };
+
+  currentPage.onMountCallback()
+
+  // Array.from(elm.querySelectorAll("script")).forEach((oldScriptEl) => {
+  //   const newScriptEl = document.createElement("script");
+
+  //   Array.from(oldScriptEl.attributes).forEach((attr) => {
+  //      if(attr.name === "id" && attr.value === "onMount") {
+  //       onMountCallback = () => eval(oldScriptEl.text);
+  //      }
+  //      if(attr.name === "id" && attr.value === "unMount") {
+  //       onUnmountCallback = () => eval(oldScriptEl.text);
+  //      }
+  //     newScriptEl.setAttribute(attr.name, attr.value);
+  //   });
+
+  //   const scriptText = document.createTextNode(oldScriptEl.innerHTML);
+  //   newScriptEl.appendChild(scriptText);
+
+  //   oldScriptEl.parentNode.replaceChild(newScriptEl, oldScriptEl);
+  // });
 }
 
 function contentLoader() {
   return {
-      isSidebarOpen: true,
-      content: "",
+    isSidebarOpen: true,
+    content: "",
 
-      loadContent(page) {
-          console.log("getting page....");
-          // Mostrar el spinner
-          document.getElementById('spinner').classList.remove('hidden');
+    loadContent(page) {
+      console.log("getting page....");
+      // Mostrar el spinner
+      document.getElementById("spinner").classList.remove("hidden");
 
-          // load destroy method
-          let unmountCallback = () => {};
-          if (pagina === "dashboard")
-              unmountCallback = onUnmountDashboard;
-          // else if(page === "ventas ") unmountCallback = onUnmountVentas;
+      pagina = page;
+      const url = paginas[pagina];
+      if (!url) {
+        // devolver pagina not found
+        console.log(`Page not found "${page}"`);
+      }
 
-          pagina = page;
-          const url = paginas[pagina];
-          if (!url) {
-              // devolver pagina not found
-              console.log(`Page not found "${page}"`);
-          }
-          let callback = () => {};
-          // load callback
-          if (page === "dashboard") callback = onLoadDashboard;
-          // else if (page === "ventas") callback = onLoadVentas;
-          
-          fetch(url)
-              .then((response) => response.text())
-              .then((html) => {
-                  // execute unmounted method
-                  unmountCallback();
+      fetch(url)
+        .then((response) => response.text())
+        .then((html) => {
+          // Replace html content
 
-                  // Replace html content
-                  const mainDocument = document.querySelector("#dynamicContent");
-                  const voidMain = document.createElement("main");
-                  voidMain.setAttribute("id", "dynamicContent");
-                  voidMain.classList.add(
-                      "flex-1",
-                      "max-h-full",
-                      "p-3",
-                      "overflow-hidden",
-                      "overflow-y-scroll",
-                      "w-full",
-                      "bg-zinc-50",
-                      "scrollbar"
-                  );
-                  mainDocument.replaceWith(voidMain);
-                  setInnerHTML(voidMain, html);
-              })
-              .catch((error) => {
-                  console.error("Error loading content:", error);
-              })
-              .finally(() => {
-                // Ocultar el spinner después
-                setTimeout(() => {
-                    if (spinner) {
-                        spinner.classList.add('hidden');
-                    }
-                }, 700);
-                  callback();
-              });
-      },
+          // onUnmountCallback();
+          setInnerHTML(html);
+          // ejecutar on mount
+          // onMountCallback();
+        })
+        .catch((error) => {
+          console.error("Error loading content:", error);
+        })
+        .finally(() => {
+          // Ocultar el spinner después
+          setTimeout(() => {
+            if (spinner) {
+              spinner.classList.add("hidden");
+            }
+          }, 700);
+        });
+    },
   };
 }
-
 
 // llamar para cargar la pagina por defecto
 const contentLoaderFunction = contentLoader();
