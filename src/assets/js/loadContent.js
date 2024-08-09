@@ -4,6 +4,7 @@ const paginas = {
   ventas: "../views/ventas/ventas.html",
   dashboard: "../views/dashboard/dashboard.html",
   clientes: "../views/clientes/clientes.html",
+  productos: "../views/productos/registrarProductos.html",
 };
 
 
@@ -71,7 +72,8 @@ function contentLoader() {
                       "overflow-hidden",
                       "overflow-y-scroll",
                       "w-full",
-                      "bg-zinc-50"
+                      "bg-zinc-50",
+                      "scrollbar"
                   );
                   mainDocument.replaceWith(voidMain);
                   setInnerHTML(voidMain, html);
@@ -85,7 +87,7 @@ function contentLoader() {
                     if (spinner) {
                         spinner.classList.add('hidden');
                     }
-                }, 500);
+                }, 700);
                   callback();
               });
       },

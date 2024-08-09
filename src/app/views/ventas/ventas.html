@@ -1,58 +1,100 @@
-<!-- --------------------------------------- Styles CSS ---------------------------------------- -->
 
     <div class="flex flex-wrap p-2 gap-4">
 
-        <div class="flex-grow w-full sm:w-1/3 lg:w-1/3 xl:w-1/3 mx-auto px-6 py-4 bg-white rounded-xl shadow-xl border-t-2 border-green-500">
-            <h2 class="text-lg font-outfit mb-2">Ventas</h2>
-            <hr class="mb-4">
-      
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 text-base font-outfit">
-                <div class="md:col-span-1">
-                    <label class="block mb-2">Fecha <span class="text-red-500">*</span></label>
-                    <input type="date" class="mt-1 block w-full border border-border rounded p-3" />
-                </div>
-                <div class="md:col-span-2 flex items-center">
-                    <div class="flex-1">
-                        <label class="block mb-2">Cliente <span
-                                class="text-red-500">*</span></label>
-                        <select class="block w-full border border-border rounded-l p-3">
-                            <option>Seleccionar</option>
-                        </select>
+        <div
+            class="flex-grow w-full sm:w-1/3 lg:w-1/3 xl:w-1/3 mx-auto px-6 py-4 bg-white rounded-lg shadow-md border-t-2 border-green-500">
+            <div class="flex justify-between mb-2">
+                <h2 class="text-lg font-outfit">Ventas</h2>
+                <button
+                    class="bg-slate-600 text-white hover:bg-slate-700 p-2 rounded transition-all font-outfit text-sm flex items-center space-x-2">
+                    <span class="material-icons">shopping_cart</span>
+                    <span class="text-sm font-outfit">Mayoreo</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mb-4 text-base font-outfit">
+                <div class="flex md:flex-row flex-col items-center w-full">
+                    <div class="md:w-1/2 w-full md:mb-0 mb-4">
+                        <label class="block mb-2">Fecha <span class="text-red-500">*</span></label>
+                        <input type="date" class="mt-1 block w-full border border-border rounded p-3" />
                     </div>
-                    <button
-                        class="relative flex items-center mt-8 space-x-2 bg-green-500 border-1 transition-all text-white hover:bg-green-400 p-2.5 rounded-r shadow-2xl transform scale-105"
-                        style="box-shadow: 0 2px 6px rgba(0, 255, 0, 0.322), 0 1px 3px rgba(43, 255, 0, 0.411);">
-                        <span class="material-icons">add</span>
-                        <span class="text-sm font-outfit">Agregar</span>
-                    </button>
+                    <div class="md:w-1/2 w-full md:ml-4">
+                        <label class="block mb-2 ">Cliente <span class="text-red-500">*</span></label>
+                        <button id="dropdownSearchButton" data-dropdown-toggle="dropdownSearch"
+                            class="inline-flex justify-between items-center w-full p-4 text-sm font-outfit text-center text-white bg-slate-600 transition-all rounded hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800"
+                            type="button">Buscar clientes 
+                            <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                            </svg>
+                        </button>
+                        <!-- Dropdown menu -->
+                        <div id="dropdownSearch" class="z-10 hidden bg-zinc-50 rounded-lg shadow-md border w-80 dark:bg-gray-700">
+                            <div class="p-3">
+                                <label for="input-group-search" class="sr-only">Search</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                        </svg>
+                                    </div>
+                                    <input type="text" id="input-group-search"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Search user">
+                                </div>
+                            </div>
+                            <ul class="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
+                                aria-labelledby="dropdownSearchButton">
+                                <li>
+                                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        <input id="checkbox-item-11" type="checkbox" value=""
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="checkbox-item-11"
+                                            class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Bonnie
+                                            Green</label>
+                                    </div>
+                                </li>
+                            </ul>
+                            <a href="#"
+                                class="flex items-center p-3 text-sm font-medium text-red-600 border-t border-gray-200 rounded-b-lg bg-gray-50 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-red-500 hover:underline">
+                                <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" viewBox="0 0 20 18">
+                                    <path
+                                        d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-6a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2Z" />
+                                </svg>
+                                Delete user
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-      
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 text-base font-outfit">
                 <div>
-                    <label class="block mb-2">Comprobante <span
-                            class="text-red-500">*</span></label>
+                    <label class="block mb-2">Comprobante <span class="text-red-500">*</span></label>
                     <select class="mt-1 block w-full border border-border rounded p-3">
                         <option>Seleccionar</option>
                     </select>
                 </div>
-      
+
                 <div>
-                    <label class="block mb-2">Tipo de pago <span
-                            class="text-red-500">*</span></label>
+                    <label class="block mb-2">Tipo de pago <span class="text-red-500">*</span></label>
                     <select class="mt-1 block w-full border border-border rounded p-3">
                         <option>Efectivo</option>
                     </select>
                 </div>
             </div>
-              
-      
+
+
             <div class="scrollbar min-h-32 max-h-32 overflow-y-auto">
                 <table class="min-w-full border-collapse bg-white">
                     <thead class="bg-zinc-50 border-gray-300">
                         <tr class="text-slate-950 text-base font-outfit border-b-2">
-                            <th
-                                class="p-2 flex items-center space-x-2 bg-white rounded flex justify-center border border-slate-300">
+                            <td class="p-2 text-left">
+                                <input id="default-checkbox" type="checkbox" value="" class=" w-4 h-4 text-blue-600 border-blue-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            </td>
+                            <th class="p-2 flex items-center space-x-2 flex justify-center">
                                 <span class="material-icons text-red-500">close</span>
                             </th>
                             <th class="p-2 text-left">Producto</th>
@@ -63,6 +105,9 @@
                     </thead>
                     <tbody class="font-outfit text-sm">
                         <tr>
+                            <td class="p-2">
+                                <input id="default-checkbox" type="checkbox" value="" class=" w-4 h-4 text-blue-600 border-blue-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            </td>
                             <td class="p-2 flex justify-center items-center">
                                 <button
                                     class="relative flex items-center justify-center w-6 h-6 rounded bg-red-500  focus:outline-none transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg">
@@ -81,6 +126,9 @@
                             <td class="p-2 text-right">1.03</td>
                         </tr>
                         <tr>
+                            <td class="p-2">
+                                <input id="default-checkbox" type="checkbox" value="" class=" w-4 h-4 text-blue-600 border-blue-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            </td>
                             <td class="p-2 flex justify-center items-center">
                                 <button
                                     class="relative flex items-center justify-center w-6 h-6 rounded bg-red-500  focus:outline-none transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg">
@@ -99,6 +147,9 @@
                             <td class="p-2 text-right">3.00</td>
                         </tr>
                         <tr>
+                            <td class="p-2">
+                                <input id="default-checkbox" type="checkbox" value="" class=" w-4 h-4 text-blue-600 border-blue-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            </td>
                             <td class="p-2 flex justify-center items-center">
                                 <button
                                     class="relative flex items-center justify-center w-6 h-6 rounded bg-red-500  focus:outline-none transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg">
@@ -117,6 +168,9 @@
                             <td class="p-2 text-right">1.00</td>
                         </tr>
                         <tr>
+                            <td class="p-2">
+                                <input id="default-checkbox" type="checkbox" value="" class=" w-4 h-4 text-blue-600 border-blue-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            </td>
                             <td class="p-2 flex justify-center items-center">
                                 <button
                                     class="relative flex items-center justify-center w-6 h-6 rounded bg-red-500  focus:outline-none transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg">
@@ -137,7 +191,7 @@
                     </tbody>
                 </table>
             </div>
-      
+
             <div class="mt-4 font-outfit text-base text-slate-800">
                 <div class="flex justify-between p-2 ">
                     <span>SubTotal</span>
@@ -155,22 +209,21 @@
                     <span>$ 5.03</span>
                 </div>
             </div>
-      
+
             <div class="flex justify-between mt-2 space-x-6 md:space-x-32 font-outfit text-base">
                 <div class="flex-1">
                     <label class="block  mb-2">PAGAR</label>
                     <input type="number" class="input border border-border rounded p-2 w-full text-right"
                         placeholder="0.00" />
                 </div>
-      
+
                 <div class="flex-1 flex flex-col items-end">
                     <label class="block  mb-2">CAMBIO</label>
-                    <span
-                        class="block border border-border rounded p-2 w-full text-right bg-gray-200">0.00</span>
+                    <span class="block border border-border rounded p-2 w-full text-right bg-gray-200">0.00</span>
                 </div>
             </div>
-      
-      
+
+
             <div class="flex justify-between mt-6 space-x-6">
                 <button
                     class="bg-slate-800 text-white hover:bg-slate-700 p-2 rounded transition-all font-Outfit text-sm w-full flex items-center justify-center space-x-2">
@@ -184,12 +237,12 @@
                 </button>
             </div>
         </div>
-      
-      
-      
+
+
+
         <!--Card 2 tabla 2-->
         <div
-            class="flex-grow w-full sm:w-1/3 lg:w-1/2 xl:w-1/2 mx-auto px-6 py-4 bg-white rounded-xl shadow-xl border-t-2 border-green-500">
+            class="flex-grow w-full sm:w-1/3 lg:w-1/2 xl:w-1/2 mx-auto px-6 py-4 bg-white rounded-lg shadow-md border-t-2 border-green-500">
             <h2 class="text-lg font-outfit mb-2">Agregar un Producto</h2>
             <div class="relative mb-4 font-jakarta text-sm">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
@@ -198,7 +251,7 @@
                 <input type="text" placeholder="Buscar productos"
                     class="border border-slate-400 rounded-lg pl-10 pr-2 py-2 w-full focus:border-blue-300 focus:ring-0 focus:outline-none transition-colors" />
             </div>
-      
+
             <div class="overflow-x-auto">
                 <div class="scrollbar max-h-160 overflow-y-auto">
                     <table class="min-w-full bg-card">
@@ -216,8 +269,8 @@
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -234,8 +287,8 @@
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -244,15 +297,15 @@
                                 <td class="p-2">fer-1</td>
                                 <td class="p-2">Fernet</td>
                                 <td class="p-2 text-right"><span>9.50</span></td>
-                                <td class="p-2 text-right"><span
-                                        class="bg-yellow-500 text-white p-1 rounded">17</span></td>
+                                <td class="p-2 text-right"><span class="bg-yellow-500 text-white p-1 rounded">17</span>
+                                </td>
                             </tr>
                             <tr class="border-b border-border">
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -261,15 +314,15 @@
                                 <td class="p-2">fer-1</td>
                                 <td class="p-2">Fernet</td>
                                 <td class="p-2 text-right"><span>9.50</span></td>
-                                <td class="p-2 text-right"><span
-                                        class="bg-yellow-500 text-white p-1 rounded">17</span></td>
+                                <td class="p-2 text-right"><span class="bg-yellow-500 text-white p-1 rounded">17</span>
+                                </td>
                             </tr>
                             <tr class="border-b border-border">
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -278,15 +331,15 @@
                                 <td class="p-2">fer-1</td>
                                 <td class="p-2">Fernet</td>
                                 <td class="p-2 text-right"><span>9.50</span></td>
-                                <td class="p-2 text-right"><span
-                                        class="bg-yellow-500 text-white p-1 rounded">17</span></td>
+                                <td class="p-2 text-right"><span class="bg-yellow-500 text-white p-1 rounded">17</span>
+                                </td>
                             </tr>
                             <tr class="border-b border-border">
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -295,15 +348,14 @@
                                 <td class="p-2">1213</td>
                                 <td class="p-2">Gaseosasssssssssssssssss ssssssssssssssssss</td>
                                 <td class="p-2 text-right"><span>9.50</span></td>
-                                <td class="p-2 text-right"><span
-                                        class="bg-red-500 text-white p-1 rounded">8</span></td>
+                                <td class="p-2 text-right"><span class="bg-red-500 text-white p-1 rounded">8</span></td>
                             </tr>
                             <tr class="border-b border-border">
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -316,13 +368,13 @@
                                     <span class="bg-green-500 text-white p-1 rounded">102</span>
                                 </td>
                             </tr>
-      
+
                             <tr class="border-b border-border">
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -331,15 +383,15 @@
                                 <td class="p-2">fer-1</td>
                                 <td class="p-2">Fernet</td>
                                 <td class="p-2 text-right"><span>9.50</span></td>
-                                <td class="p-2 text-right"><span
-                                        class="bg-yellow-500 text-white p-1 rounded">17</span></td>
+                                <td class="p-2 text-right"><span class="bg-yellow-500 text-white p-1 rounded">17</span>
+                                </td>
                             </tr>
                             <tr class="border-b border-border">
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -348,15 +400,15 @@
                                 <td class="p-2">fer-1</td>
                                 <td class="p-2">Fernet</td>
                                 <td class="p-2 text-right"><span>9.50</span></td>
-                                <td class="p-2 text-right"><span
-                                        class="bg-yellow-500 text-white p-1 rounded">17</span></td>
+                                <td class="p-2 text-right"><span class="bg-yellow-500 text-white p-1 rounded">17</span>
+                                </td>
                             </tr>
                             <tr class="border-b border-border">
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -373,8 +425,8 @@
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -383,15 +435,15 @@
                                 <td class="p-2">fer-1</td>
                                 <td class="p-2">Fernet</td>
                                 <td class="p-2 text-right"><span>9.50</span></td>
-                                <td class="p-2 text-right"><span
-                                        class="bg-yellow-500 text-white p-1 rounded">17</span></td>
+                                <td class="p-2 text-right"><span class="bg-yellow-500 text-white p-1 rounded">17</span>
+                                </td>
                             </tr>
                             <tr class="border-b border-border">
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -400,15 +452,15 @@
                                 <td class="p-2">fer-1</td>
                                 <td class="p-2">Fernet</td>
                                 <td class="p-2 text-right"><span>9.50</span></td>
-                                <td class="p-2 text-right"><span
-                                        class="bg-yellow-500 text-white p-1 rounded">17</span></td>
+                                <td class="p-2 text-right"><span class="bg-yellow-500 text-white p-1 rounded">17</span>
+                                </td>
                             </tr>
                             <tr class="border-b border-border">
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -417,15 +469,15 @@
                                 <td class="p-2">fer-1</td>
                                 <td class="p-2">Fernet</td>
                                 <td class="p-2 text-right"><span>9.50</span></td>
-                                <td class="p-2 text-right"><span
-                                        class="bg-yellow-500 text-white p-1 rounded">17</span></td>
+                                <td class="p-2 text-right"><span class="bg-yellow-500 text-white p-1 rounded">17</span>
+                                </td>
                             </tr>
                             <tr class="border-b border-border">
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -434,15 +486,15 @@
                                 <td class="p-2">fer-1</td>
                                 <td class="p-2">Fernet</td>
                                 <td class="p-2 text-right"><span>9.50</span></td>
-                                <td class="p-2 text-right"><span
-                                        class="bg-yellow-500 text-white p-1 rounded">17</span></td>
+                                <td class="p-2 text-right"><span class="bg-yellow-500 text-white p-1 rounded">17</span>
+                                </td>
                             </tr>
                             <tr class="border-b border-border">
                                 <td class="p-2 flex justify-center">
                                     <button
                                         class="relative flex items-center justify-center text-white rounded bg-green-500 shadow-green-3d w-8 h-8 p-0 transition-transform transition-all duration-300 ease-in-out hover:bg-green-400 hover:scale-110 hover:shadow-lg focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                            viewBox="0 -960 960 960" width="20px" fill="#ffffff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                            width="20px" fill="#ffffff">
                                             <path
                                                 d="M444-576v-132H312v-72h132v-132h72v132h132v72H516v132h-72ZM263.79-96Q234-96 213-117.21t-21-51Q192-198 213.21-219t51-21Q294-240 315-218.79t21 51Q336-138 314.79-117t-51 21Zm432 0Q666-96 645-117.21t-21-51Q624-198 645.21-219t51-21Q726-240 747-218.79t21 51Q768-138 746.79-117t-51 21ZM48-792v-72h133l155 360h301l113-264h78L703-476q-9 20-26.5 32T637-432H317l-42 72h493v72H276q-42 0-63-36.5t0-71.5l52-90-131-306H48Z" />
                                         </svg>
@@ -451,15 +503,15 @@
                                 <td class="p-2">fer-1</td>
                                 <td class="p-2">Fernet</td>
                                 <td class="p-2 text-right"><span>9.50</span></td>
-                                <td class="p-2 text-right"><span
-                                        class="bg-yellow-500 text-white p-1 rounded">17</span></td>
+                                <td class="p-2 text-right"><span class="bg-yellow-500 text-white p-1 rounded">17</span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-      </div>
+    </div>
 
 
 <!-- ---------------------------------- JS logica del codigo ----------------------------------- -->
