@@ -42,6 +42,8 @@ function setInnerHTML(html) {
 
   // iterate all childrens of virtualDom
   const childrenToAppend = [];
+  currentPage.onMountCallback = () => {};
+  currentPage.onUnmountCallback = () => {};
   for (let i = 0; i < virtualDom.children.length; i++) {
     const child = virtualDom.children[i];
     // filter childs that are scripts
@@ -62,42 +64,14 @@ function setInnerHTML(html) {
     }
   }
   elm.append(...childrenToAppend);
-  // virtualDom.children().forEach((child) => {
-  //   // filter childs that are scripts
-  //   if (child.tagName === "SCRIPT" && child.id === "mount") {
-  //     onMountCallback = () => eval(oldScriptEl.text);
-  //   } else if( child.tagName === "SCRIPT" && child.id === "unmount") {
-  //     onUnmountCallback = () => eval(oldScriptEl.text);
-  //   } else {
-  //     elm.appendChild(child);
-  //   }
-  // });
+
   currentPage = {
     element: elm,
     onUnmountCallback: currentPage.onUnmountCallback,
     onMountCallback: currentPage.onMountCallback,
   };
 
-  currentPage.onMountCallback()
-
-  // Array.from(elm.querySelectorAll("script")).forEach((oldScriptEl) => {
-  //   const newScriptEl = document.createElement("script");
-
-  //   Array.from(oldScriptEl.attributes).forEach((attr) => {
-  //      if(attr.name === "id" && attr.value === "onMount") {
-  //       onMountCallback = () => eval(oldScriptEl.text);
-  //      }
-  //      if(attr.name === "id" && attr.value === "unMount") {
-  //       onUnmountCallback = () => eval(oldScriptEl.text);
-  //      }
-  //     newScriptEl.setAttribute(attr.name, attr.value);
-  //   });
-
-  //   const scriptText = document.createTextNode(oldScriptEl.innerHTML);
-  //   newScriptEl.appendChild(scriptText);
-
-  //   oldScriptEl.parentNode.replaceChild(newScriptEl, oldScriptEl);
-  // });
+  currentPage.onMountCallback();
 }
 
 function contentLoader() {
@@ -121,11 +95,7 @@ function contentLoader() {
         .then((response) => response.text())
         .then((html) => {
           // Replace html content
-
-          // onUnmountCallback();
           setInnerHTML(html);
-          // ejecutar on mount
-          // onMountCallback();
         })
         .catch((error) => {
           console.error("Error loading content:", error);
