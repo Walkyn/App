@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Financiero Moderno</title>
+    <!-- Tailwind CSS -->
+    <link href="../../../output.css" rel="stylesheet">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-6">
+        <div class="grid grid-cols-3 gap-6">
+            <!-- INGRESOS TOTALES -->
+            <div class="bg-white p-6 shadow-md rounded-lg">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-semibold">INGRESOS TOTALES</h2>
+                    <span class="text-2xl font-bold text-blue-600">S/ 0.00</span>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center mb-2">
+                        <span class="material-icons text-blue-500 mr-2">trending_up</span>
+                        <h3 class="text-lg font-medium">Ingresos</h3>
+                    </div>
+                    <ul class="mt-2">
+                        <li class="flex justify-between py-1">
+                            <span>Total de ventas</span>
+                            <span>S/ 0.00</span>
+                        </li>
+                        <li class="flex justify-between py-1">
+                            <span>Entrada de efectivo</span>
+                            <span>S/ 0.00</span>
+                        </li>
+                        <li class="flex justify-between py-1">
+                            <span>Fondo de caja</span>
+                            <span>S/ 0.00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- VENTAS TOTALES -->
+            <div class="bg-white p-6 shadow-md rounded-lg">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-semibold">VENTAS TOTALES</h2>
+                    <span class="text-2xl font-bold text-green-600">S/ 0.00</span>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center mb-2">
+                        <span class="material-icons text-green-500 mr-2">shopping_cart</span>
+                        <h3 class="text-lg font-medium">Ventas</h3>
+                    </div>
+                    <ul class="mt-2">
+                        <li class="flex justify-between py-1">
+                            <span>Total de ventas</span>
+                            <span>S/ 0.00</span>
+                        </li>
+                        <li class="flex justify-between py-1">
+                            <span>Ganancia del día</span>
+                            <span>S/ 0.00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TOTAL EN CAJA -->
+            <div class="bg-white p-6 shadow-md rounded-lg">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-semibold">TOTAL EN CAJA</h2>
+                    <span class="text-2xl font-bold text-red-600">S/ 0.00</span>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center mb-2">
+                        <span class="material-icons text-red-500 mr-2">account_balance_wallet</span>
+                        <h3 class="text-lg font-medium">Dinero en caja</h3>
+                    </div>
+                    <ul class="mt-2">
+                        <li class="flex justify-between py-1">
+                            <span>Fondo de caja</span>
+                            <span>S/ 0.00</span>
+                        </li>
+                        <li class="flex justify-between py-1">
+                            <span>Ventas totales</span>
+                            <span>S/ 0.00</span>
+                        </li>
+                        <li class="flex justify-between py-1">
+                            <span>Entradas</span>
+                            <span>S/ 0.00</span>
+                        </li>
+                        <li class="flex justify-between py-1 text-red-600">
+                            <span>Salidas</span>
+                            <span>S/ 0.00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- INFORMES -->
+        <div class="grid grid-cols-2 gap-6 mt-8">
+            <!-- Informe Diario Salidas de Efectivo -->
+            <div class="bg-white p-6 shadow rounded-lg">
+                <h2 class="text-lg font-semibold text-red-500">INFORME DIARIO SALIDAS DE EFECTIVO</h2>
+                <table class="min-w-full mt-4">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 text-left">Descripción</th>
+                            <th class="px-4 py-2 text-left">Monto</th>
+                            <th class="px-4 py-2 text-left">Usuario</th>
+                            <th class="px-4 py-2 text-left">Fecha</th>
+                            <th class="px-4 py-2 text-left">Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data rows -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Informe Diario Entrada de Efectivo -->
+            <div class="bg-white p-6 shadow rounded-lg">
+                <h2 class="text-lg font-semibold text-green-500">INFORME DIARIO ENTRADA DE EFECTIVO</h2>
+                <table class="min-w-full mt-4">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 text-left">Descripción</th>
+                            <th class="px-4 py-2 text-left">Monto</th>
+                            <th class="px-4 py-2 text-left">Usuario</th>
+                            <th class="px-4 py-2 text-left">Fecha</th>
+                            <th class="px-4 py-2 text-left">Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

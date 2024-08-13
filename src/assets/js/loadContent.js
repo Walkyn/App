@@ -3,7 +3,9 @@ const paginas = {
   ventas: "../views/ventas/ventas.html",
   dashboard: "../views/dashboard/dashboard.html",
   clientes: "../views/clientes/clientes.html",
-  productos: "../views/productos/registrarProductos.html",
+  productos: "../views/productos/products.html",
+  add_stock: "../views/inventario/add-stock.html",
+  agotados_stock: "../views/inventario/agotados-stock.html",
 };
 
 let pagina = "dashboard";
@@ -24,7 +26,7 @@ function setInnerHTML(html) {
   elm.classList.add(
     "flex-1",
     "max-h-full",
-    "p-3",
+    "p-2",
     "overflow-hidden",
     "overflow-y-scroll",
     "w-full",
