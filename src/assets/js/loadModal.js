@@ -1,4 +1,5 @@
   document.addEventListener('DOMContentLoaded', () => {
+    console.log('loadModal.js script loaded');
         const modal = document.getElementById('modal');
         const modalBody = document.getElementById('modal-body');
         const createProductButton = document.getElementById('createProductButton');
