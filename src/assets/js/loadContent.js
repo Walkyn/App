@@ -30,7 +30,7 @@ function setInnerHTML(html) {
     "overflow-hidden",
     "overflow-y-scroll",
     "w-full",
-    "bg-zinc-50",
+    "bg-white",
     "scrollbar"
   );
   mainDocument.replaceWith(elm);
